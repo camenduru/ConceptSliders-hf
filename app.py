@@ -191,7 +191,7 @@ class Demo:
         self.train_button.click(self.train, inputs = [
             self.target_concept,
             self.positive_prompt,
-            slef.negative_prompt,
+            self.negative_prompt,
             self.rank,
             self.iterations_input,
             self.lr_input
@@ -234,7 +234,7 @@ class Demo:
 #         model_map['Custom'] = save_path
 
 #         return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom model in the "Test" tab'), save_path, gr.Dropdown.update(choices=list(model_map.keys()), value='Custom')]
-        return None
+        return [None, None, None, None]
 
     def inference(self, prompt, seed, start_noise, scale, model_name, pbar = gr.Progress(track_tqdm=True)):
         
