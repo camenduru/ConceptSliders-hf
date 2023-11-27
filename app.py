@@ -282,10 +282,10 @@ class Demo:
 
 
         generator = torch.manual_seed(seed)
-        edited_image = pipe(prompt, num_images_per_prompt=1, num_inference_steps=50, generator=generator, network=network, start_noise=start_noise, scale=scale, unet=unet).images[0]
+        edited_image = self.pipe(prompt, num_images_per_prompt=1, num_inference_steps=50, generator=generator, network=network, start_noise=start_noise, scale=scale, unet=unet).images[0]
         
         generator = torch.manual_seed(seed)
-        original_image = pipe(prompt, num_images_per_prompt=1, num_inference_steps=50, generator=generator, network=network, start_noise=start_noise, scale=0, unet=unet).images[0]
+        original_image = self.pipe(prompt, num_images_per_prompt=1, num_inference_steps=50, generator=generator, network=network, start_noise=start_noise, scale=0, unet=unet).images[0]
         
         del unet, network
         unet = None
