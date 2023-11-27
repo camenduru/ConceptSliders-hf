@@ -105,8 +105,7 @@ class Demo:
 
                 with gr.Row():
 
-                    self.explain_train= gr.Markdown(interactive=False, 
-                                      value='In this part you can train a concept slider for Stable Diffusion XL.   Enter a target concept you wish to make an edit on. Next, enter a enhance prompt of the attribute you wish to edit (for controlling age of a person, enter "person, old"). Then, type the supress prompt of the attribute (for our example, enter "person, young"). Then press "train" button. With default settings, it takes about 15 minutes to train a slider; then you can try inference above or download the weights. Code and details are at [github link](https://github.com/rohitgandikota/sliders).')
+                    self.explain_train= gr.Markdown(value='In this part you can train a concept slider for Stable Diffusion XL.   Enter a target concept you wish to make an edit on. Next, enter a enhance prompt of the attribute you wish to edit (for controlling age of a person, enter "person, old"). Then, type the supress prompt of the attribute (for our example, enter "person, young"). Then press "train" button. With default settings, it takes about 15 minutes to train a slider; then you can try inference above or download the weights. Code and details are at [github link](https://github.com/rohitgandikota/sliders).')
 
                 with gr.Row():
 
@@ -183,40 +182,40 @@ class Demo:
 
     def train(self, prompt, train_method, neg_guidance, iterations, lr, pbar = gr.Progress(track_tqdm=True)):
 
-        if self.training:
-            return [gr.update(interactive=True, value='Train'), gr.update(value='Someone else is training... Try again soon'), None, gr.update()]
+#         if self.training:
+#             return [gr.update(interactive=True, value='Train'), gr.update(value='Someone else is training... Try again soon'), None, gr.update()]
 
-        if train_method == 'ESD-x':
+#         if train_method == 'ESD-x':
 
-            modules = ".*attn2$"
-            frozen = []
+#             modules = ".*attn2$"
+#             frozen = []
 
-        elif train_method == 'ESD-u':
+#         elif train_method == 'ESD-u':
 
-            modules = "unet$"
-            frozen = [".*attn2$", "unet.time_embedding$", "unet.conv_out$"]   
+#             modules = "unet$"
+#             frozen = [".*attn2$", "unet.time_embedding$", "unet.conv_out$"]   
 
-        elif train_method == 'ESD-self':
+#         elif train_method == 'ESD-self':
 
-            modules = ".*attn1$"
-            frozen = []
+#             modules = ".*attn1$"
+#             frozen = []
 
-        randn = torch.randint(1, 10000000, (1,)).item()
+#         randn = torch.randint(1, 10000000, (1,)).item()
 
-        save_path = f"models/{randn}_{prompt.lower().replace(' ', '')}.pt"
+#         save_path = f"models/{randn}_{prompt.lower().replace(' ', '')}.pt"
 
-        self.training = True
+#         self.training = True
 
-        train(prompt, modules, frozen, iterations, neg_guidance, lr, save_path)
+#         train(prompt, modules, frozen, iterations, neg_guidance, lr, save_path)
 
-        self.training = False
+#         self.training = False
 
-        torch.cuda.empty_cache()
+#         torch.cuda.empty_cache()
 
-        model_map['Custom'] = save_path
+#         model_map['Custom'] = save_path
 
-        return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom model in the "Test" tab'), save_path, gr.Dropdown.update(choices=list(model_map.keys()), value='Custom')]
-
+#         return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom model in the "Test" tab'), save_path, gr.Dropdown.update(choices=list(model_map.keys()), value='Custom')]
+        return None
 
     def inference(self, prompt, seed, model_name, pbar = gr.Progress(track_tqdm=True)):
         
@@ -227,38 +226,40 @@ class Demo:
         model_path = model_map[model_name]
         
         checkpoint = torch.load(model_path)
+        
+        return None
 
-        finetuner = FineTunedModel.from_checkpoint(self.diffuser, checkpoint).eval().half()
+#         finetuner = FineTunedModel.from_checkpoint(self.diffuser, checkpoint).eval().half()
 
-        torch.cuda.empty_cache()
+#         torch.cuda.empty_cache()
 
-        images = self.diffuser(
-            prompt,
-            n_steps=50,
-            generator=generator
-        )
+#         images = self.diffuser(
+#             prompt,
+#             n_steps=50,
+#             generator=generator
+#         )
 
         
-        orig_image = images[0][0]
+#         orig_image = images[0][0]
 
-        torch.cuda.empty_cache()
+#         torch.cuda.empty_cache()
 
-        generator = torch.manual_seed(seed)
+#         generator = torch.manual_seed(seed)
 
-        with finetuner:
+#         with finetuner:
 
-            images = self.diffuser(
-                prompt,
-                n_steps=50,
-                generator=generator
-            )
+#             images = self.diffuser(
+#                 prompt,
+#                 n_steps=50,
+#                 generator=generator
+#             )
 
-        edited_image = images[0][0]
+#         edited_image = images[0][0]
 
-        del finetuner
-        torch.cuda.empty_cache()
+#         del finetuner
+#         torch.cuda.empty_cache()
 
-        return edited_image, orig_image
+#         return edited_image, orig_image
 
 
 demo = Demo()
