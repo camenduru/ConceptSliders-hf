@@ -4,7 +4,8 @@ import os
 from utils import call
 from diffusers.pipelines import StableDiffusionXLPipeline
 StableDiffusionXLPipeline.__call__ = call
-
+import os
+os.environ['CURL_CA_BUNDLE'] = ''
 model_map = {'Age' : 'models/age.pt', 
              'Chubby': 'models/chubby.pt',
              'Muscular': 'models/muscular.pt',
@@ -35,7 +36,7 @@ class Demo:
         self.generating = False
         self.device = 'cuda'
         self.weight_dtype = torch.float16
-        self.pipe = StableDiffusionXLPipeline.from_pretrained('stabilityai/stable-diffusion-xl-base-1.0', torch_dtype=weight_dtype)
+        self.pipe = StableDiffusionXLPipeline.from_pretrained('stabilityai/stable-diffusion-xl-base-1.0', torch_dtype=self.weight_dtype)
 
         with gr.Blocks() as demo:
             self.layout()
