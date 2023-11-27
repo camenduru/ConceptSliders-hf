@@ -113,11 +113,13 @@ class Demo:
 
                             self.image_new = gr.Image(
                                 label="Slider",
-                                interactive=False
+                                interactive=False,
+                                type='pil',
                             )
                             self.image_orig = gr.Image(
                                 label="Original SD",
-                                interactive=False
+                                interactive=False,
+                                type='pil',
                             )
 
             with gr.Tab("Train") as training_column:
