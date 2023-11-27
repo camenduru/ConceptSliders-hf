@@ -168,7 +168,7 @@ class Demo:
 
                     with gr.Column(scale=1):
 
-                        self.train_status = gr.Button(value='', variant='primary', label='Status', interactive=False)
+                        self.train_status = gr.Button(value='', variant='primary', interactive=False)
 
                         self.train_button = gr.Button(
                             value="Train",
@@ -199,7 +199,7 @@ class Demo:
         outputs=[self.train_button,  self.train_status, self.download, self.model_dropdown]
         )
 
-    def train(self, prompt, train_method, neg_guidance, iterations, lr, pbar = gr.Progress(track_tqdm=True)):
+    def train(self, target_concept,positive_prompt, negative_prompt, rank, iterations_input, lr_input, train_method, neg_guidance, iterations, lr, pbar = gr.Progress(track_tqdm=True)):
 
 #         if self.training:
 #             return [gr.update(interactive=True, value='Train'), gr.update(value='Someone else is training... Try again soon'), None, gr.update()]
