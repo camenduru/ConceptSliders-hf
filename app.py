@@ -43,7 +43,7 @@ class Demo:
 
         with gr.Blocks() as demo:
             self.layout()
-            demo.queue().launch(max_threads=3)
+            demo.queue().launch()
 
 
     def layout(self):
@@ -86,7 +86,9 @@ class Demo:
                                 value=12345
                             )
                             
-                            self.slider_scale_infr = gr.Number(
+                            self.slider_scale_infr = gr.Slider(
+                                -6,
+                                6,
                                 label="Slider Scale",
                                 value=2,
                                 info="Larger slider scale result in stronger edit"
