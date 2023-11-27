@@ -43,7 +43,7 @@ class Demo:
 
         with gr.Blocks() as demo:
             self.layout()
-            demo.queue(concurrency_count=5).launch()
+            demo.queue().launch(max_threads=3)
 
 
     def layout(self):
