@@ -37,8 +37,8 @@ class Demo:
 
         self.training = False
         self.generating = False
-        self.device = 'cpu'
-        self.weight_dtype = torch.float32
+        self.device = 'cuda'
+        self.weight_dtype = torch.float16
         self.pipe = StableDiffusionXLPipeline.from_pretrained('stabilityai/stable-diffusion-xl-base-1.0', torch_dtype=self.weight_dtype).to(self.device)
 
         with gr.Blocks() as demo:
