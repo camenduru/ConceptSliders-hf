@@ -4,7 +4,8 @@ import os
 from utils import call
 from diffusers.pipelines import StableDiffusionXLPipeline
 StableDiffusionXLPipeline.__call__ = call
-
+import os
+os.environ['CURL_CA_BUNDLE'] = ''
 model_map = {'Age' : 'models/age.pt', 
              'Chubby': 'models/chubby.pt',
              'Muscular': 'models/muscular.pt',
