@@ -35,7 +35,7 @@ class Demo:
         self.generating = False
         self.device = 'cuda'
         self.weight_dtype = torch.float16
-        self.pipe = StableDiffusionXLPipeline.from_pretrained('stabilityai/stable-diffusion-xl-base-1.0', torch_dtype=weight_dtype)
+        self.pipe = StableDiffusionXLPipeline.from_pretrained('stabilityai/stable-diffusion-xl-base-1.0', torch_dtype=self.weight_dtype)
 
         with gr.Blocks() as demo:
             self.layout()
