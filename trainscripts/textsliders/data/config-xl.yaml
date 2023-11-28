@@ -25,4 +25,4 @@ logging:
   use_wandb: false
   verbose: false
 other:
-  use_xformers: true
+  use_xformers: false
