@@ -278,7 +278,7 @@ class Demo:
         name = os.path.basename(model_path)
         rank = 4
         alpha = 1
-        if rank in model_path:
+        if 'rank' in model_path:
             rank = int(model_path.split('_')[-1].replace('.pt',''))
 #         if 'rank4' in model_path:
 #             rank = 4
