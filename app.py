@@ -245,7 +245,7 @@ class Demo:
         save_name = f"{randn}_{target_concept.replace(',','').replace(' ','').replace('.','')[:10]}_{positive_prompt.replace(',','').replace(' ','').replace('.','')[:10]}"
         save_name += f'_alpha-{1}'
         save_name += f'_noxattn'
-        save_name += f'_rank_{rank}.pt'
+        save_name += f'_rank_{int(rank)}.pt'
         
 #         if torch.cuda.get_device_properties(0).total_memory * 1e-9 < 40:
 #             return [gr.update(interactive=True, value='Train'), gr.update(value='GPU Memory is not enough for training... Please upgrade to GPU atleast 40GB or clone the repo to your local machine.'), None, gr.update()]
@@ -257,7 +257,7 @@ class Demo:
             attributes = 'white, black, asian, hispanic, indian, male, female'
         
         self.training = True
-        train_xl(target=target_concept, positive=positive_prompt, negative=negative_prompt, lr=lr_input, iterations=iterations_input, config_file='trainscripts/textsliders/data/config-xl.yaml', rank=rank, device=self.device, attributes=attributes, save_name=save_name)
+        train_xl(target=target_concept, positive=positive_prompt, negative=negative_prompt, lr=lr_input, iterations=iterations_input, config_file='trainscripts/textsliders/data/config-xl.yaml', rank=int(rank), device=self.device, attributes=attributes, save_name=save_name)
         self.training = False
 
         torch.cuda.empty_cache()
@@ -293,7 +293,7 @@ class Demo:
         rank = 4
         alpha = 1
         if 'rank' in model_path:
-            rank = int(model_path.split('_')[-1].replace('.pt',''))
+            rank = int(float(model_path.split('_')[-1].replace('.pt','')))
         if 'alpha1' in model_path:
             alpha = 1.0
         network = LoRANetwork(
