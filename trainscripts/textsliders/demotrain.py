@@ -426,7 +426,7 @@ def train_xl(target, positive, negative, lr, iterations, config_file, rank, devi
     else:
         attributes = []
     config.network.alpha = 1.0
-    config.network.rank = rank
+    config.network.rank = int(rank)
     
     config.save.path += f'/{config.save.name}'
     
