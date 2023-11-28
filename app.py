@@ -48,7 +48,7 @@ class Demo:
         self.generating = False
         self.device = 'cuda'
         self.weight_dtype = torch.float16
-        self.pipe = StableDiffusionXLPipeline.from_pretrained('stabilityai/stable-diffusion-xl-base-1.0', torch_dtype=self.weight_dtype).to('cpu')
+        self.pipe = StableDiffusionXLPipeline.from_pretrained('stabilityai/stable-diffusion-xl-base-1.0', torch_dtype=self.weight_dtype).to(self.device)
         self.pipe.enable_xformers_memory_efficient_attention()
         with gr.Blocks() as demo:
             self.layout()
@@ -268,7 +268,6 @@ class Demo:
         generator = torch.manual_seed(seed)
 
         model_path = model_map[model_name]
-        self.pipe = self.pipe.to(self.device)
         unet = self.pipe.unet
         network_type = "c3lier"
         if 'full' in model_path:
@@ -311,7 +310,6 @@ class Demo:
         del unet, network
         unet = None
         network = None
-        self.pipe = self.pipe.to('cpu')
         torch.cuda.empty_cache()
         
         return edited_image, original_image 
