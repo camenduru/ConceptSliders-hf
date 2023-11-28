@@ -229,7 +229,7 @@ class Demo:
         
         
         randn = torch.randint(1, 10000000, (1,)).item()
-        save_name = f'{randn}_{target_concept.replace(',','').replace(' ','').replace('.','')[:10]}_{positive_prompt.replace(',','').replace(' ','').replace('.','')[:10]}'
+        save_name = f"{randn}_{target_concept.replace(',','').replace(' ','').replace('.','')[:10]}_{positive_prompt.replace(',','').replace(' ','').replace('.','')[:10]}"
         save_name += f'_alpha-{1}'
         save_name += f'_noxattn'
         save_name += f'_rank_{rank}.pt'
