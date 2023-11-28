@@ -36,7 +36,7 @@ model_map = {
 ORIGINAL_SPACE_ID = 'baulab/ConceptSliders'
 SPACE_ID = os.getenv('SPACE_ID')
 
-SHARED_UI_WARNING = f'''## Attention - Training does not work in this shared UI. You can either duplicate and use it with a gpu with at least 40GB, or clone this repository to run on your own machine.
+SHARED_UI_WARNING = f'''## Attention - Training could be slow in this shared UI. You can alternatively duplicate and use it with a gpu with at least 40GB, or clone this repository to run on your own machine.
 <center><a class="duplicate-button" style="display:inline-block" target="_blank" href="https://huggingface.co/spaces/{SPACE_ID}?duplicate=true"><img style="margin-top:0;margin-bottom:0" src="https://img.shields.io/badge/-Duplicate%20Space-blue?labelColor=white&style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAP5JREFUOE+lk7FqAkEURY+ltunEgFXS2sZGIbXfEPdLlnxJyDdYB62sbbUKpLbVNhyYFzbrrA74YJlh9r079973psed0cvUD4A+4HoCjsA85X0Dfn/RBLBgBDxnQPfAEJgBY+A9gALA4tcbamSzS4xq4FOQAJgCDwV2CPKV8tZAJcAjMMkUe1vX+U+SMhfAJEHasQIWmXNN3abzDwHUrgcRGmYcgKe0bxrblHEB4E/pndMazNpSZGcsZdBlYJcEL9Afo75molJyM2FxmPgmgPqlWNLGfwZGG6UiyEvLzHYDmoPkDDiNm9JR9uboiONcBXrpY1qmgs21x1QwyZcpvxt9NS09PlsPAAAAAElFTkSuQmCC&logoWidth=14" alt="Duplicate Space"></a></center>
 '''
 
@@ -77,10 +77,10 @@ class Demo:
                     with gr.Column(scale=1):
 
                         self.prompt_input_infr = gr.Text(
-                            placeholder="photo of a person, realistic, 8k",
+                            placeholder="photo of a person with bokeh background at night, realistic, 8k",
                             label="Prompt",
                             info="Prompt to generate",
-                            value="photo of a person, realistic, 8k"
+                            value="photo of a person with bokeh background at night, realistic, 8k"
                         )
 
                         with gr.Row():
@@ -101,7 +101,7 @@ class Demo:
                                 -6,
                                 6,
                                 label="Slider Scale",
-                                value=2,
+                                value=3,
                                 info="Larger slider scale result in stronger edit"
                             )
 
@@ -137,7 +137,7 @@ class Demo:
 
                 with gr.Row():
 
-                    self.explain_train= gr.Markdown(value='In this part you can train a concept slider for Stable Diffusion XL.   Enter a target concept you wish to make an edit on. Next, enter a enhance prompt of the attribute you wish to edit (for controlling age of a person, enter "person, old"). Then, type the supress prompt of the attribute (for our example, enter "person, young"). Then press "train" button. With default settings, it takes about 15 minutes to train a slider; then you can try inference above or download the weights. Code and details are at [github link](https://github.com/rohitgandikota/sliders).')
+                    self.explain_train= gr.Markdown(value='In this part you can train a textual concept sliders for Stable Diffusion XL. Enter a target concept you wish to make an edit on (eg. person). Next, enter a enhance prompt of the attribute you wish to edit (for controlling age of a person, enter "person, old"). Then, type the supress prompt of the attribute (for our example, enter "person, young"). Then press "train" button. With default settings, it takes about 25 minutes to train a slider; then you can try inference above or download the weights. For faster training, please duplicate the repo and train with A100 or larger GPU. Code and details are at [github link](https://github.com/rohitgandikota/sliders).')
 
                 with gr.Row():
 
@@ -179,12 +179,12 @@ class Demo:
                             label="Rank of the Slider",
                             info='Slider Rank to train'
                         )
-                        choices = ['xattn', 'noxattn', 'full']
+                        choices = ['xattn', 'noxattn']
                         self.train_method_input = gr.Dropdown(
                             choices=choices,
                             value='xattn',
                             label='Train Method',
-                            info='Method of training. If xattn - loras will be on cross attns only. noxattn - all layers except cross attn (official implementation). full - all layers',
+                            info='Method of training. If [* xattn *] - loras will be on cross attns only. [* noxattn *] (official implementation) - all layers except cross attn',
                             interactive=True
                         )
                         self.iterations_input = gr.Number(
@@ -243,9 +243,9 @@ class Demo:
         print(target_concept, positive_prompt, negative_prompt, attributes_input, is_person)
         
         randn = torch.randint(1, 10000000, (1,)).item()
-        save_name = f"{randn}_{target_concept.replace(',','').replace(' ','').replace('.','')[:10]}_{positive_prompt.replace(',','').replace(' ','').replace('.','')[:10]}"
+        save_name = f"{randn}_{positive_prompt.replace(',','').replace(' ','').replace('.','')[:20]}"
         save_name += f'_alpha-{1}'
-        save_name += f'_noxattn'
+        save_name += f'_{train_method_input}'
         save_name += f'_rank_{int(rank)}.pt'
         
 #         if torch.cuda.get_device_properties(0).total_memory * 1e-9 < 40:
