@@ -432,5 +432,5 @@ def train_xl(target, positive, negative, lr, iterations, config_file, rank, devi
     
     prompts = prompt_util.load_prompts_from_yaml(path=config.prompts_file, target=target, positive=positive, negative=negative,  attributes=attributes)
     
-    device = torch.device(f"cuda:{device}")
+    device = torch.device(device)
     train(config, prompts, device)
