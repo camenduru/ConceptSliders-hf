@@ -263,7 +263,7 @@ class Demo:
         torch.cuda.empty_cache()
         model_map['Custom Slider'] = f'models/{save_name}'
         
-        return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom slider in the "Test" tab'), f'models/{save_name}', gr.Dropdown.update(choices=list(model_map.keys()), value='Custom Slider')]
+        return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom slider in the "Test" tab'), f'models/{save_name}', gr.Dropdown.change(choices=list(model_map.keys()), value='Custom Slider')]
 
     
     def inference(self, prompt, seed, start_noise, scale, model_name, pbar = gr.Progress(track_tqdm=True)):
