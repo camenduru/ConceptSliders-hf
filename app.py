@@ -233,8 +233,8 @@ class Demo:
 #             positive_prompt = ''
 #         if negative_prompt is None:
 #             negative_prompt = ''
-          if attributes_input == '':
-              attributes_input = None
+        if attributes_input == '':
+            attributes_input = None
         print(target_concept, positive_prompt, negative_prompt, attributes_input, is_person)
         
         randn = torch.randint(1, 10000000, (1,)).item()
