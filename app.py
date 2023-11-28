@@ -227,13 +227,11 @@ class Demo:
         )
 
     def train(self, target_concept,positive_prompt, negative_prompt, rank, iterations_input, lr_input, train_method, neg_guidance, iterations, lr, attributes_input, is_person, pbar = gr.Progress(track_tqdm=True)):
-        if '' in attributes_input:
-            attributes_input = None
-        if '...' in target_concept:
+        if target_concept is None:
             target_concept = ''
-        if '...' in positive_prompt:
+        if positive_prompt is None:
             positive_prompt = ''
-        if '...' in negative_prompt:
+        if negative_prompt is None:
             negative_prompt = ''
         
         
