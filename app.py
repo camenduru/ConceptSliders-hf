@@ -230,12 +230,13 @@ class Demo:
             self.iterations_input,
             self.lr_input,
             self.attributes_input,
-            self.is_person
+            self.is_person,
+            self.train_method_input
         ],
         outputs=[self.train_button,  self.train_status, self.download, self.model_dropdown]
         )
 
-    def train(self, target_concept,positive_prompt, negative_prompt, rank, iterations_input, lr_input, attributes_input, is_person, pbar = gr.Progress(track_tqdm=True)):
+    def train(self, target_concept,positive_prompt, negative_prompt, rank, iterations_input, lr_input, attributes_input, is_person, train_method_input, pbar = gr.Progress(track_tqdm=True)):
         iterations_input = min(int(iterations_input),1000)
         if attributes_input == '':
             attributes_input = None
@@ -257,13 +258,13 @@ class Demo:
             attributes = 'white, black, asian, hispanic, indian, male, female'
         
         self.training = True
-        train_xl(target=target_concept, positive=positive_prompt, negative=negative_prompt, lr=lr_input, iterations=iterations_input, config_file='trainscripts/textsliders/data/config-xl.yaml', rank=int(rank), device=self.device, attributes=attributes, save_name=save_name)
+        train_xl(target=target_concept, positive=positive_prompt, negative=negative_prompt, lr=lr_input, iterations=iterations_input, config_file='trainscripts/textsliders/data/config-xl.yaml', rank=int(rank), train_method=train_method_input, device=self.device, attributes=attributes, save_name=save_name)
         self.training = False
 
         torch.cuda.empty_cache()
-        model_map['Custom Slider'] = f'models/{save_name}'
+        model_map[save_name.replace('.pt','')] = f'models/{save_name}'
         
-        return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom slider in the "Test" tab'), f'models/{save_name}', gr.update(choices=list(model_map.keys()), value='Custom Slider')]
+        return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom slider in the "Test" tab'), f'models/{save_name}', gr.update(choices=list(model_map.keys()), value=save_name.replace('.pt',''))]
 
     
     def inference(self, prompt, seed, start_noise, scale, model_name, pbar = gr.Progress(track_tqdm=True)):
