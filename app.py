@@ -236,12 +236,13 @@ class Demo:
         
         if self.training:
             return [gr.update(interactive=True, value='Train'), gr.update(value='Someone else is training... Try again soon'), None, gr.update()]
+        
         attributes = attributes_input
         if is_person:
             attributes = 'white, black, asian, hispanic, indian, male, female'
+        
         self.training = True
         train_xl(target=target_concept, postive=positive_prompt, negative=negative_prompt, lr=lr_input, iterations=iterations_input, config_file='trainscripts/textsliders/data/config-xl.yaml', rank=rank, device=self.device, attributes=attributes, save_name=save_name)
-
         self.training = False
 
         torch.cuda.empty_cache()
