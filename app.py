@@ -18,8 +18,7 @@ model_map = {
              'Smiling' : 'models/smiling.pt',
              'Professional': 'models/professional.pt',
              
-             'Wavy Eyebrows': 'models/eyebrows.pt',
-             'Small Eyes': 'models/eyesize.pt',
+             
              
              'Long Hair' : 'models/longhair.pt',
              'Curly Hair' : 'models/curlyhair.pt',
@@ -30,6 +29,8 @@ model_map = {
              'Repair Images': 'models/repair_slider.pt',
              'Fix Hands': 'models/fix_hands.pt',
              
+             'Wavy Eyebrows': 'models/eyebrows.pt',
+             'Small Eyes (use scales -3, -1, 1, 3)': 'models/eyesize.pt',
             }
 
 ORIGINAL_SPACE_ID = 'baulab/ConceptSliders'
@@ -189,7 +190,7 @@ class Demo:
                             value=1000,
                             precision=0,
                             label="Iterations",
-                            info='iterations used to train'
+                            info='iterations used to train - maximum of 1000'
                         )
 
                         self.lr_input = gr.Number(
@@ -234,7 +235,7 @@ class Demo:
         )
 
     def train(self, target_concept,positive_prompt, negative_prompt, rank, iterations_input, lr_input, attributes_input, is_person, pbar = gr.Progress(track_tqdm=True)):
-
+        iterations_input = max(int(iterations_input),1000)
         if attributes_input == '':
             attributes_input = None
         print(target_concept, positive_prompt, negative_prompt, attributes_input, is_person)
