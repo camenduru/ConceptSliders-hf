@@ -76,9 +76,10 @@ class Demo:
                     with gr.Column(scale=1):
 
                         self.prompt_input_infr = gr.Text(
-                            placeholder="Enter prompt...",
+                            placeholder="photo of a person, realistic, 8k",
                             label="Prompt",
-                            info="Prompt to generate"
+                            info="Prompt to generate",
+                            value="photo of a person, realistic, 8k"
                         )
 
                         with gr.Row():
