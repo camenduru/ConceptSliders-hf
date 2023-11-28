@@ -12,7 +12,7 @@ import torch
 from tqdm import tqdm
 
 
-from lora import LoRANetwork, DEFAULT_TARGET_REPLACE, UNET_TARGET_REPLACE_MODULE_CONV
+from trainscripts.textsliders.lora import LoRANetwork, DEFAULT_TARGET_REPLACE, UNET_TARGET_REPLACE_MODULE_CONV
 import train_util
 import model_util
 import prompt_util
