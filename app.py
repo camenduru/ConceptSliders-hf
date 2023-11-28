@@ -184,10 +184,11 @@ class Demo:
                             choices=choices,
                             value='xattn',
                             label='Train Method',
-                            info='Method of training. If xattn - loras will be on cross attns only. noxattn - all layers except cross attn (official implementation). full - all layers'
+                            info='Method of training. If xattn - loras will be on cross attns only. noxattn - all layers except cross attn (official implementation). full - all layers',
+                            interactive=True
                         )
                         self.iterations_input = gr.Number(
-                            value=1000,
+                            value=500,
                             precision=0,
                             label="Iterations",
                             info='iterations used to train - maximum of 1000'
@@ -262,7 +263,7 @@ class Demo:
         torch.cuda.empty_cache()
         model_map['Custom Slider'] = f'models/{save_name}'
         
-        return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom slider in the "Test" tab'), save_path, gr.Dropdown.update(choices=list(model_map.keys()), value='Custom Slider')]
+        return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom slider in the "Test" tab'), f'models/{save_name}', gr.Dropdown.update(choices=list(model_map.keys()), value='Custom Slider')]
 
     
     def inference(self, prompt, seed, start_noise, scale, model_name, pbar = gr.Progress(track_tqdm=True)):
