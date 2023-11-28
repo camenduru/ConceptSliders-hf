@@ -13,18 +13,18 @@ from tqdm import tqdm
 
 
 from trainscripts.textsliders.lora import LoRANetwork, DEFAULT_TARGET_REPLACE, UNET_TARGET_REPLACE_MODULE_CONV
-import train_util
-import model_util
-import prompt_util
-from prompt_util import (
+import trainscripts.textsliders.train_util as train_util
+import trainscripts.textsliders.model_util as model_util
+import trainscripts.textsliders.prompt_util as prompt_util
+from trainscripts.textsliders.prompt_util import (
     PromptEmbedsCache,
     PromptEmbedsPair,
     PromptSettings,
     PromptEmbedsXL,
 )
-import debug_util
-import config_util
-from config_util import RootConfig
+import trainscripts.textsliders.debug_util as debug_util
+import trainscripts.textsliders.config_util as config_util
+from trainscripts.textsliders.config_util import RootConfig
 
 import wandb
 
