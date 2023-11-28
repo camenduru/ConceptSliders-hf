@@ -148,9 +148,18 @@ class PromptEmbedsPair:
             raise ValueError("action must be erase or enhance")
 
 
-def load_prompts_from_yaml(path, attributes = []):
+def load_prompts_from_yaml(path, target, positive, negative, attributes = []):
     with open(path, "r") as f:
         prompts = yaml.safe_load(f)
+    new = []
+    for prompt in prompts:
+        copy_ = copy.deepcopy(prompt)
+        copy_['target'] = target
+        copy_['positive'] = positive
+        copy_['neutral'] = target
+        copy_['unconditional'] = negative
+        new.append(copy_)
+    prompts = new
     print(prompts)    
     if len(prompts) == 0:
         raise ValueError("prompts file is empty")

@@ -19,7 +19,7 @@ train:
 save:
   name: "temp"
   path: "./models"
-  per_steps: 500
+  per_steps: 5000000
   precision: "bfloat16"
 logging:
   use_wandb: false

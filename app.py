@@ -6,7 +6,7 @@ from diffusers.pipelines import StableDiffusionXLPipeline
 StableDiffusionXLPipeline.__call__ = call
 import os
 from trainscripts.textsliders.lora import LoRANetwork, DEFAULT_TARGET_REPLACE, UNET_TARGET_REPLACE_MODULE_CONV
-
+from trainscripts.textsliders.demotrain import train_xl
 
 os.environ['CURL_CA_BUNDLE'] = ''
 model_map = {'Age' : 'models/age.pt', 
@@ -204,10 +204,26 @@ class Demo:
         )
 
     def train(self, target_concept,positive_prompt, negative_prompt, rank, iterations_input, lr_input, train_method, neg_guidance, iterations, lr, pbar = gr.Progress(track_tqdm=True)):
+        
+        
+        randn = torch.randint(1, 10000000, (1,)).item()
+        save_name = f'{randn}_{target_concept.replace(',','').replace(' ','').replace('.','')[:10]}_{positive_prompt.replace(',','').replace(' ','').replace('.','')[:10]}'
+        save_name += f'_alpha-{1}'
+        save_name += f'_noxattn'
+        save_name += f'_rank_{rank}.pt'
+        
+        if self.training:
+            return [gr.update(interactive=True, value='Train'), gr.update(value='Someone else is training... Try again soon'), None, gr.update()]
+        
+        self.training = True
+        train_xl(target, postive, negative, lr, iterations, config_file, rank, device, attributes)
 
-#         if self.training:
-#             return [gr.update(interactive=True, value='Train'), gr.update(value='Someone else is training... Try again soon'), None, gr.update()]
+        self.training = False
 
+        torch.cuda.empty_cache()
+        model_map['Custom Slider'] = f'models/{save_name}'
+        
+        return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom slider in the "Test" tab'), save_path, gr.Dropdown.update(choices=list(model_map.keys()), value='Custom Slider')]
 #         if train_method == 'ESD-x':
 
 #             modules = ".*attn2$"
@@ -223,7 +239,7 @@ class Demo:
 #             modules = ".*attn1$"
 #             frozen = []
 
-#         randn = torch.randint(1, 10000000, (1,)).item()
+#         
 
 #         save_path = f"models/{randn}_{prompt.lower().replace(' ', '')}.pt"
 
@@ -237,7 +253,7 @@ class Demo:
 
 #         model_map['Custom'] = save_path
 
-#         return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom model in the "Test" tab'), save_path, gr.Dropdown.update(choices=list(model_map.keys()), value='Custom')]
+#         
         return [None, None, None, None]
 
     def inference(self, prompt, seed, start_noise, scale, model_name, pbar = gr.Progress(track_tqdm=True)):
@@ -267,10 +283,12 @@ class Demo:
         name = os.path.basename(model_path)
         rank = 4
         alpha = 1
-        if 'rank4' in model_path:
-            rank = 4
-        if 'rank8' in model_path:
-            rank = 8
+        if rank in model_path:
+            rank = int(model_path.split('_')[-1].replace('.pt',''))
+#         if 'rank4' in model_path:
+#             rank = 4
+#         if 'rank8' in model_path:
+#             rank = 8
         if 'alpha1' in model_path:
             alpha = 1.0
         network = LoRANetwork(

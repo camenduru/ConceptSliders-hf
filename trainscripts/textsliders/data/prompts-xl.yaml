@@ -1,3 +1,12 @@
+- target: "" # what word for erasing the positive concept from
+  positive: ""  # concept to erase
+  unconditional: "" # word to take the difference from the positive concept
+  neutral: "" # starting point for conditioning the target
+  action: "enhance" # erase or enhance
+  guidance_scale: 4
+  resolution: 512
+  dynamic_resolution: false
+  batch_size: 1
 ####################################################################################################### AGE SLIDER
 # - target: "male person" # what word for erasing the positive concept from
 #   positive: "male person, very old" # concept to erase
@@ -257,24 +266,24 @@
 #   dynamic_resolution: false
 #   batch_size: 1
 ####################################################################################################### SCULPTURE SLIDER
-- target: "male person" # what word for erasing the positive concept from
-  positive: "male person, cement sculpture, cement greek statue style"  # concept to erase
-  unconditional: "male person, realistic, hyper realistic" # word to take the difference from the positive concept
-  neutral: "male person" # starting point for conditioning the target
-  action: "enhance" # erase or enhance
-  guidance_scale: 4
-  resolution: 512
-  dynamic_resolution: false
-  batch_size: 1
-- target: "female person" # what word for erasing the positive concept from
-  positive: "female person, cement sculpture, cement greek statue style"  # concept to erase
-  unconditional: "female person, realistic, hyper realistic" # word to take the difference from the positive concept
-  neutral: "female person" # starting point for conditioning the target
-  action: "enhance" # erase or enhance
-  guidance_scale: 4
-  resolution: 512
-  dynamic_resolution: false
-  batch_size: 1
+# - target: "male person" # what word for erasing the positive concept from
+#   positive: "male person, cement sculpture, cement greek statue style"  # concept to erase
+#   unconditional: "male person, realistic, hyper realistic" # word to take the difference from the positive concept
+#   neutral: "male person" # starting point for conditioning the target
+#   action: "enhance" # erase or enhance
+#   guidance_scale: 4
+#   resolution: 512
+#   dynamic_resolution: false
+#   batch_size: 1
+# - target: "female person" # what word for erasing the positive concept from
+#   positive: "female person, cement sculpture, cement greek statue style"  # concept to erase
+#   unconditional: "female person, realistic, hyper realistic" # word to take the difference from the positive concept
+#   neutral: "female person" # starting point for conditioning the target
+#   action: "enhance" # erase or enhance
+#   guidance_scale: 4
+#   resolution: 512
+#   dynamic_resolution: false
+#   batch_size: 1
 ####################################################################################################### METAL SLIDER
 # - target: "" # what word for erasing the positive concept from
 #   positive: "made out of metal, metallic style, iron, copper, platinum metal,"  # concept to erase
