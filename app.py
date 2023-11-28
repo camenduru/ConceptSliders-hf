@@ -9,18 +9,27 @@ from trainscripts.textsliders.lora import LoRANetwork, DEFAULT_TARGET_REPLACE, U
 from trainscripts.textsliders.demotrain import train_xl
 
 os.environ['CURL_CA_BUNDLE'] = ''
-model_map = {'Age' : 'models/age.pt', 
+
+model_map = {
+             'Age' : 'models/age.pt', 
              'Chubby': 'models/chubby.pt',
              'Muscular': 'models/muscular.pt',
+             'Surprised Look': 'models/suprised_look.pt',
+             'Smiling' : 'models/smiling.pt',
+             'Professional': 'models/professional.pt',
+             
              'Wavy Eyebrows': 'models/eyebrows.pt',
              'Small Eyes': 'models/eyesize.pt',
+             
              'Long Hair' : 'models/longhair.pt',
              'Curly Hair' : 'models/curlyhair.pt',
-             'Smiling' : 'models/smiling.pt',
+             
              'Pixar Style' : 'models/pixar_style.pt',
              'Sculpture Style': 'models/sculpture_style.pt',
+             
              'Repair Images': 'models/repair_slider.pt',
              'Fix Hands': 'models/fix_hands.pt',
+             
             }
 
 ORIGINAL_SPACE_ID = 'baulab/ConceptSliders'
