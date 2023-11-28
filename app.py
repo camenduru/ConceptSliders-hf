@@ -92,7 +92,7 @@ class Demo:
 
                             self.seed_infr = gr.Number(
                                 label="Seed",
-                                value=12345
+                                value=42
                             )
                             
                             self.slider_scale_infr = gr.Slider(
@@ -144,28 +144,28 @@ class Demo:
                         self.target_concept = gr.Text(
                             placeholder="Enter target concept to make edit on ...",
                             label="Prompt of concept on which edit is made",
-                            info="Prompt corresponding to concept to edit",
+                            info="Prompt corresponding to concept to edit (eg: 'person')",
                             value = ''
                         )
                         
                         self.positive_prompt = gr.Text(
                             placeholder="Enter the enhance prompt for the edit ...",
                             label="Prompt to enhance",
-                            info="Prompt corresponding to concept to enhance",
+                            info="Prompt corresponding to concept to enhance (eg: 'person, old')",
                             value = ''
                         )
                         
                         self.negative_prompt = gr.Text(
                             placeholder="Enter the suppress prompt for the edit ...",
                             label="Prompt to suppress",
-                            info="Prompt corresponding to concept to supress",
+                            info="Prompt corresponding to concept to supress (eg: 'person, young')",
                             value = ''
                         )
                         
                         self.attributes_input = gr.Text(
                             placeholder="Enter the concepts to preserve (comma seperated). Leave empty if not required ...",
                             label="Concepts to Preserve",
-                            info="Comma seperated concepts to preserve/disentangle",
+                            info="Comma seperated concepts to preserve/disentangle (eg: 'male, female')",
                             value = ''
                         )
                         self.is_person = gr.Checkbox(
@@ -177,7 +177,13 @@ class Demo:
                             label="Rank of the Slider",
                             info='Slider Rank to train'
                         )
-
+                        choices = ['xattn', 'noxattn', 'full']
+                        self.train_method_input = gr.Dropdown(
+                            choices=choices,
+                            value='xattn',
+                            label='Train Method',
+                            info='Method of training. If xattn - loras will be on cross attns only. noxattn - all layers except cross attn (official implementation). full - all layers'
+                        )
                         self.iterations_input = gr.Number(
                             value=1000,
                             precision=0,
@@ -259,7 +265,7 @@ class Demo:
     
     def inference(self, prompt, seed, start_noise, scale, model_name, pbar = gr.Progress(track_tqdm=True)):
         
-        seed = seed or 12345
+        seed = seed or 42
 
         generator = torch.manual_seed(seed)
 
