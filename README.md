@@ -7,6 +7,7 @@ sdk: gradio
 sdk_version: 4.7.1
 app_file: app.py
 pinned: false
+python_version: Python 3.9
 license: mit
 ---
 
