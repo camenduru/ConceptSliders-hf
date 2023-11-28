@@ -423,6 +423,8 @@ def train_xl(target, postive, negative, lr, iterations, config_file, rank, devic
     if attributes is not None:
         attributes = attributes.split(',')
         attributes = [a.strip() for a in attributes]
+    else:
+        attributes = []
     config.network.alpha = 1.0
     config.network.rank = rank
     
