@@ -20,9 +20,9 @@ save:
   name: "temp"
   path: "./models"
   per_steps: 5000000
-  precision: "bfloat16"
+  precision: "fp32"
 logging:
   use_wandb: false
   verbose: false
 other:
-  use_xformers: false
+  use_xformers: true
