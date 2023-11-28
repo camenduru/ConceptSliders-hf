@@ -52,7 +52,7 @@ class Demo:
         self.pipe.enable_xformers_memory_efficient_attention()
         with gr.Blocks() as demo:
             self.layout()
-            demo.queue().launch(share=True, max_threads=3)
+            demo.queue(max_size=5).launch(share=True, max_threads=3)
 
 
     def layout(self):
@@ -245,8 +245,8 @@ class Demo:
         save_name += f'_noxattn'
         save_name += f'_rank_{rank}.pt'
         
-        if torch.cuda.get_device_properties(0).total_memory * 1e-9 < 40:
-            return [gr.update(interactive=True, value='Train'), gr.update(value='GPU Memory is not enough for training... Please upgrade to GPU atleast 40GB or clone the repo to your local machine.'), None, gr.update()]
+#         if torch.cuda.get_device_properties(0).total_memory * 1e-9 < 40:
+#             return [gr.update(interactive=True, value='Train'), gr.update(value='GPU Memory is not enough for training... Please upgrade to GPU atleast 40GB or clone the repo to your local machine.'), None, gr.update()]
         if self.training:
             return [gr.update(interactive=True, value='Train'), gr.update(value='Someone else is training... Try again soon'), None, gr.update()]
         
