@@ -40,7 +40,7 @@ class Demo:
         self.device = 'cuda'
         self.weight_dtype = torch.float16
         self.pipe = StableDiffusionXLPipeline.from_pretrained('stabilityai/stable-diffusion-xl-base-1.0', torch_dtype=self.weight_dtype).to(self.device)
-
+        self.pipe.enable_xformers_memory_efficient_attention()
         with gr.Blocks() as demo:
             self.layout()
             demo.queue().launch(share=True, max_threads=3)
@@ -280,10 +280,6 @@ class Demo:
         alpha = 1
         if 'rank' in model_path:
             rank = int(model_path.split('_')[-1].replace('.pt',''))
-#         if 'rank4' in model_path:
-#             rank = 4
-#         if 'rank8' in model_path:
-#             rank = 8
         if 'alpha1' in model_path:
             alpha = 1.0
         network = LoRANetwork(
@@ -297,7 +293,7 @@ class Demo:
 
 
         generator = torch.manual_seed(seed)
-        edited_image = self.pipe(prompt, num_images_per_prompt=1, num_inference_steps=50, generator=generator, network=network, start_noise=start_noise, scale=scale, unet=unet).images[0]
+        edited_image = self.pipe(prompt, num_images_per_prompt=1, num_inference_steps=50, generator=generator, network=network, start_noise=int(start_noise), scale=float(scale), unet=unet).images[0]
         
         generator = torch.manual_seed(seed)
         original_image = self.pipe(prompt, num_images_per_prompt=1, num_inference_steps=50, generator=generator, network=network, start_noise=start_noise, scale=0, unet=unet).images[0]
