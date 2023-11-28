@@ -135,21 +135,33 @@ class Demo:
                         self.target_concept = gr.Text(
                             placeholder="Enter target concept to make edit on ...",
                             label="Prompt of concept on which edit is made",
-                            info="Prompt corresponding to concept to edit"
+                            info="Prompt corresponding to concept to edit",
+                            value = ''
                         )
                         
                         self.positive_prompt = gr.Text(
-                            placeholder="Enter the enhance prompt for the edit...",
+                            placeholder="Enter the enhance prompt for the edit ...",
                             label="Prompt to enhance",
-                            info="Prompt corresponding to concept to enhance"
+                            info="Prompt corresponding to concept to enhance",
+                            value = ''
                         )
                         
                         self.negative_prompt = gr.Text(
-                            placeholder="Enter the suppress prompt for the edit...",
+                            placeholder="Enter the suppress prompt for the edit ...",
                             label="Prompt to suppress",
-                            info="Prompt corresponding to concept to supress"
+                            info="Prompt corresponding to concept to supress",
+                            value = ''
                         )
-
+                        
+                        self.attributes_input = gr.Text(
+                            placeholder="Enter the concepts to preserve (comma seperated). Leave empty if not required ...",
+                            label="Concepts to Preserve",
+                            info="Comma seperated concepts to preserve/disentangle",
+                            value = ''
+                        )
+                        self.is_person = gr.Checkbox(
+                            label="Person", 
+                            info="Are you training a slider for person?")
 
                         self.rank = gr.Number(
                             value=4,
@@ -198,12 +210,22 @@ class Demo:
             self.negative_prompt,
             self.rank,
             self.iterations_input,
-            self.lr_input
+            self.lr_input,
+            self.attributes_input,
+            self.is_person
         ],
         outputs=[self.train_button,  self.train_status, self.download, self.model_dropdown]
         )
 
-    def train(self, target_concept,positive_prompt, negative_prompt, rank, iterations_input, lr_input, train_method, neg_guidance, iterations, lr, pbar = gr.Progress(track_tqdm=True)):
+    def train(self, target_concept,positive_prompt, negative_prompt, rank, iterations_input, lr_input, train_method, neg_guidance, iterations, lr, attributes_input, is_person, pbar = gr.Progress(track_tqdm=True)):
+        if '' in attributes_input:
+            attributes_input = None
+        if '...' in target_concept:
+            target_concept = ''
+        if '...' in positive_prompt:
+            positive_prompt = ''
+        if '...' in negative_prompt:
+            negative_prompt = ''
         
         
         randn = torch.randint(1, 10000000, (1,)).item()
@@ -214,9 +236,11 @@ class Demo:
         
         if self.training:
             return [gr.update(interactive=True, value='Train'), gr.update(value='Someone else is training... Try again soon'), None, gr.update()]
-        
+        attributes = attributes_input
+        if is_person:
+            attributes = 'white, black, asian, hispanic, indian, male, female'
         self.training = True
-        train_xl(target, postive, negative, lr, iterations, config_file, rank, device, attributes)
+        train_xl(target=target_concept, postive=positive_prompt, negative=negative_prompt, lr=lr_input, iterations=iterations_input, config_file='trainscripts/textsliders/data/config-xl.yaml', rank=rank, device=self.device, attributes=attributes, save_name=save_name)
 
         self.training = False
 
@@ -224,38 +248,8 @@ class Demo:
         model_map['Custom Slider'] = f'models/{save_name}'
         
         return [gr.update(interactive=True, value='Train'), gr.update(value='Done Training! \n Try your custom slider in the "Test" tab'), save_path, gr.Dropdown.update(choices=list(model_map.keys()), value='Custom Slider')]
-#         if train_method == 'ESD-x':
 
-#             modules = ".*attn2$"
-#             frozen = []
-
-#         elif train_method == 'ESD-u':
-
-#             modules = "unet$"
-#             frozen = [".*attn2$", "unet.time_embedding$", "unet.conv_out$"]   
-
-#         elif train_method == 'ESD-self':
-
-#             modules = ".*attn1$"
-#             frozen = []
-
-#         
-
-#         save_path = f"models/{randn}_{prompt.lower().replace(' ', '')}.pt"
-
-#         self.training = True
-
-#         train(prompt, modules, frozen, iterations, neg_guidance, lr, save_path)
-
-#         self.training = False
-
-#         torch.cuda.empty_cache()
-
-#         model_map['Custom'] = save_path
-
-#         
-        return [None, None, None, None]
-
+    
     def inference(self, prompt, seed, start_noise, scale, model_name, pbar = gr.Progress(track_tqdm=True)):
         
         seed = seed or 12345
