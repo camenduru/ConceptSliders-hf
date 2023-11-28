@@ -235,7 +235,7 @@ class Demo:
         )
 
     def train(self, target_concept,positive_prompt, negative_prompt, rank, iterations_input, lr_input, attributes_input, is_person, pbar = gr.Progress(track_tqdm=True)):
-        iterations_input = max(int(iterations_input),1000)
+        iterations_input = min(int(iterations_input),1000)
         if attributes_input == '':
             attributes_input = None
         print(target_concept, positive_prompt, negative_prompt, attributes_input, is_person)
