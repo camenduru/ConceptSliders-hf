@@ -428,7 +428,7 @@ def train_xl(target, positive, negative, lr, iterations, config_file, rank, devi
     config.network.alpha = 1.0
     config.network.rank = int(rank)
     
-    config.save.path += f'/{config.save.name}'
+#     config.save.path += f'/{config.save.name}'
     
     prompts = prompt_util.load_prompts_from_yaml(path=config.prompts_file, target=target, positive=positive, negative=negative,  attributes=attributes)
     
