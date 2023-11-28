@@ -227,12 +227,6 @@ class Demo:
         )
 
     def train(self, target_concept,positive_prompt, negative_prompt, rank, iterations_input, lr_input, attributes_input, is_person, pbar = gr.Progress(track_tqdm=True)):
-#         if target_concept is None:
-#             target_concept = ''
-#         if positive_prompt is None:
-#             positive_prompt = ''
-#         if negative_prompt is None:
-#             negative_prompt = ''
 
         if attributes_input == '':
             attributes_input = None
@@ -244,6 +238,8 @@ class Demo:
         save_name += f'_noxattn'
         save_name += f'_rank_{rank}.pt'
         
+        if torch.cuda.get_device_properties(0).total_memory * 1e-9 < 40:
+            return [gr.update(interactive=True, value='Train'), gr.update(value='GPU Memory is not enough for training... Please upgrade to GPU atleast 40GB or clone the repo to your local machine.'), None, gr.update()]
         if self.training:
             return [gr.update(interactive=True, value='Train'), gr.update(value='Someone else is training... Try again soon'), None, gr.update()]
         

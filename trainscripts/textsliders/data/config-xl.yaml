@@ -9,7 +9,7 @@ network:
   alpha: 1.0
   training_method: "xattn"
 train:
-  precision: "fp16"
+  precision: "bfloat16"
   noise_scheduler: "ddim" # or "ddpm", "lms", "euler_a"
   iterations: 1000
   lr: 0.0002
@@ -20,7 +20,7 @@ save:
   name: "temp"
   path: "./models"
   per_steps: 5000000
-  precision: "fp32"
+  precision: "bfloat16"
 logging:
   use_wandb: false
   verbose: false
