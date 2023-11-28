@@ -411,7 +411,7 @@ def train(
 #     train(config, prompts, device)
 
 
-def train_xl(target, postive, negative, lr, iterations, config_file, rank, device, attributes,save_name):
+def train_xl(target, positive, negative, lr, iterations, config_file, rank, device, attributes,save_name):
     
     config = config_util.load_config_from_yaml(config_file)
     randn = torch.randint(1, 10000000, (1,)).item()

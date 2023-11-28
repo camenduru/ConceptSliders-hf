@@ -227,16 +227,16 @@ class Demo:
         )
 
     def train(self, target_concept,positive_prompt, negative_prompt, rank, iterations_input, lr_input, attributes_input, is_person, pbar = gr.Progress(track_tqdm=True)):
-        if target_concept is None:
-            target_concept = ''
-        if positive_prompt is None:
-            positive_prompt = ''
-        if negative_prompt is None:
-            negative_prompt = ''
-        if is_person is None:
-            is_person = False
-        else:
-            is_person = True
+#         if target_concept is None:
+#             target_concept = ''
+#         if positive_prompt is None:
+#             positive_prompt = ''
+#         if negative_prompt is None:
+#             negative_prompt = ''
+#         if is_person is None:
+#             is_person = False
+#         else:
+#             is_person = True
         print(target_concept, positive_prompt, negative_prompt, attributes_input, is_person)
         
         randn = torch.randint(1, 10000000, (1,)).item()
@@ -253,7 +253,7 @@ class Demo:
             attributes = 'white, black, asian, hispanic, indian, male, female'
         
         self.training = True
-        train_xl(target=target_concept, postive=positive_prompt, negative=negative_prompt, lr=lr_input, iterations=iterations_input, config_file='trainscripts/textsliders/data/config-xl.yaml', rank=rank, device=self.device, attributes=attributes, save_name=save_name)
+        train_xl(target=target_concept, positive=positive_prompt, negative=negative_prompt, lr=lr_input, iterations=iterations_input, config_file='trainscripts/textsliders/data/config-xl.yaml', rank=rank, device=self.device, attributes=attributes, save_name=save_name)
         self.training = False
 
         torch.cuda.empty_cache()
