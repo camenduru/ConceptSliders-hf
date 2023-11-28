@@ -9,7 +9,7 @@ network:
   alpha: 1.0
   training_method: "xattn"
 train:
-  precision: "bfloat16"
+  precision: "fp16"
   noise_scheduler: "ddim" # or "ddpm", "lms", "euler_a"
   iterations: 1000
   lr: 0.0002
